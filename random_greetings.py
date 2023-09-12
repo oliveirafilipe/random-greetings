@@ -5,9 +5,11 @@ import random
 import json
 import datetime
 from pytz import timezone
-from flask import Flask
+from flask import Flask, render_template
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='foo')
+
+styles = ["rainbow","blues","superhero","radial","tilt","purple","horizon","italicOutline","slate",]
 
 def abrir_csv(nome_arquivo):
     arquivo_csv = open(nome_arquivo, newline='')
@@ -28,7 +30,8 @@ def definir_saudacao(hora_atual):
 
 def montar_response(cumprimento):
     response = {"cumprimento": cumprimento}
-    return json.dumps(response, ensure_ascii=False).encode('utf8')
+    return render_template('index.html', content=cumprimento, style=random.choice(styles))
+    #return json.dumps(response, ensure_ascii=False).encode('utf8')
 
 arquivo_csv = abrir_csv("cbo/lista.csv")
 termos = buscar_termos_validos(arquivo_csv)
